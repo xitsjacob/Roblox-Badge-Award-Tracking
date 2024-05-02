@@ -1,0 +1,8 @@
+*.env
+*.json
+
+.venv
+
+date_format.py
+find_date.py
+grab_badges.py
