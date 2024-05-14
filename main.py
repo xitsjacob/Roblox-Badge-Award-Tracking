@@ -6,7 +6,7 @@ from dateutil import tz
 
 from roblox import Client
 
-USER_ID = "INSERT_RBLX_USERID"
+USER_ID = "2221466284"
 FILENAME = f"{USER_ID}_badges.json"
 
 client = Client()
@@ -28,7 +28,7 @@ async def grab_badges():
             for badge in badges_data["data"]:
                 awarded_date = await date_format(badge["id"])
                 badges.append({"badgeId": badge["id"], "badgeName": badge["name"], "dateAwarded": awarded_date})
-                await asyncio.sleep(2)
+                await asyncio.sleep(1)
             next_page_cursor = badges_data.get("nextPageCursor")
             params["cursor"] = next_page_cursor
             if not next_page_cursor:
