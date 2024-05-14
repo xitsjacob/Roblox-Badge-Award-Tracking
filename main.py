@@ -6,7 +6,7 @@ from dateutil import tz
 
 from roblox import Client
 
-USER_ID = "INSERT_ROBLOX_ID"
+USER_ID = "INSERT_RBLX_USERID"
 FILENAME = f"{USER_ID}_badges.json"
 
 client = Client()
@@ -27,7 +27,7 @@ async def grab_badges():
             badges_data = response.json()
             for badge in badges_data["data"]:
                 awarded_date = await date_format(badge["id"])
-                badges.append({"id": badge["id"], "name": badge["name"], "dateAwarded": awarded_date})
+                badges.append({"badgeId": badge["id"], "badgeName": badge["name"], "dateAwarded": awarded_date})
                 await asyncio.sleep(2)
             next_page_cursor = badges_data.get("nextPageCursor")
             params["cursor"] = next_page_cursor
@@ -70,8 +70,16 @@ async def date_format(badge_id):
         print(e)
 
 async def write_badges_to_file(badges, filename):
+    user_data = await client.get_user(USER_ID)
+    data_sets = {
+        "user_id": int(USER_ID),
+        "username": user_data.name,
+        "display_name": user_data.display_name,
+        "badges": badges
+    }
+
     with open(filename, 'w', encoding='utf-8') as file:
-        json.dump(badges, file, indent=4)
+        json.dump(data_sets, file, indent=4)
 
 async def main():
     badges = await grab_badges()
